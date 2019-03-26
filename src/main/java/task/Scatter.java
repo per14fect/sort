@@ -7,8 +7,13 @@ import java.util.Map;
 
 @Slf4j
 public class Scatter {
+    private static final int DIVIDED_BY = 10;
 
     public static Map<Integer, Integer> of(final int min, final int max) {
+        if (min > max) {
+            throw new IllegalArgumentException(String.format("min = %d > max = %d", min, max));
+        }
+
         Map <Integer, Integer> rangeMap = new HashMap<>();
 
         int chunk = calculateChunk(min, max);
@@ -25,7 +30,7 @@ public class Scatter {
 
         rangeMap.put(ind, max);
 
-        if (rangeMap.size() > 11) {
+        if (rangeMap.size() > DIVIDED_BY + 1) {
             throw new IllegalStateException(String.format("rangeMap size = %d", rangeMap.size()));
         }
 
@@ -33,14 +38,14 @@ public class Scatter {
     }
 
     private static int calculateChunk(final int min, final int max) {
-        int chunk = (max / 10) - (min / 10);
+        int chunk = (max / DIVIDED_BY) - (min / DIVIDED_BY);
 
         if (chunk == 0) {
             if (max != min) {
                 chunk = (max / 2) - (min / 2);
             }
 
-            chunk = (chunk != 0) ? chunk : 2;
+            chunk = (chunk > 1) ? chunk : 2;
 
         }
 
