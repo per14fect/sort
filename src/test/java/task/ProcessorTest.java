@@ -19,12 +19,11 @@ import static task.Sout.soutTime;
 public class ProcessorTest {
 
     @Test
-    public void test_fast_processor() throws IOException {
+    public void sort_fast_processor_with_1Gb_file() throws IOException {
         log.debug("------------     test_fast_processor");
         log.debug("");
         String test1Gb = "testOther1Gb.txt";
         FileSystem.writeTestData("testOther1Gb.txt",100_000_000);
-//        String test1Gb = "test1Gb.txt";
 
         long start = System.currentTimeMillis();
 
@@ -37,7 +36,7 @@ public class ProcessorTest {
     }
 
     @Test
-    public void test_fast_processor_100MB_file() throws IOException {
+    public void sort_fast_processor_with_100Mb_file() throws IOException {
         log.debug("------------     test_fast_processor_100MB_file");
         log.debug("");
         String testFile = "test100MB.txt";
