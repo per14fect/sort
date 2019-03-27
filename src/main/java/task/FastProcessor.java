@@ -71,13 +71,21 @@ public class FastProcessor{
 
         }
 
-        FileSystem.clearFile(file);
 
-        for (int i = 0; i < sortedFileList.size(); i++) {
-            File partFile = sortedFileList.get(i);
-            soutText(String.format("write file to parent = %d, file = %s", i, partFile.getName()));
-            FileSystem.appendFileToFile(partFile, file);
+        if (sortedFileList.size() == 1 && file.length() == sortedFileList.get(0).length()) {
+            File partFile = sortedFileList.get(0);
             partFile.delete();
+
+        } else {
+
+            FileSystem.clearFile(file);
+
+            for (int i = 0; i < sortedFileList.size(); i++) {
+                File partFile = sortedFileList.get(i);
+                soutText(String.format("write file to parent = %d, file = %s", i, partFile.getName()));
+                FileSystem.appendFileToFile(partFile, file);
+                partFile.delete();
+            }
         }
 
         directory.delete();

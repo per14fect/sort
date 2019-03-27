@@ -96,6 +96,30 @@ public class ProcessorTest {
         soutTime("fast processor", start);
     }
 
+    @Test
+    public void test_one_value_and_some_data() throws IOException {
+        log.debug("------------     test_one_value_data");
+        log.debug("");
+        String fileNameOneValue = "one_value.txt";
+        FileSystem.writeOneValueTestData(fileNameOneValue,100_000_000, 0);
+        String fileNameDiffValues = "diff_values.txt";
+        FileSystem.writeTestData(fileNameDiffValues,1_000);
+
+
+
+        long start = System.currentTimeMillis();
+
+        File fileOneValue = new File(fileNameOneValue);
+        File fileDiffValues = new File(fileNameDiffValues);
+        FileSystem.appendFileToFile(fileDiffValues, fileOneValue);
+
+        FastProcessor processor = new FastProcessor();
+        processor.sort(fileOneValue);
+
+        log.debug("");
+        soutTime("fast processor", start);
+    }
+
     // tests that values range from min to max is scattered properly
     @Test
     public void test_all_scatters() {
