@@ -76,7 +76,6 @@ public class FileSystem {
 
     public static void clearFile(File file) {
         try(PrintWriter pw = new PrintWriter(file)) {
-            pw.println("");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
