@@ -16,15 +16,17 @@ public class Scatter {
 
         Map <Integer, Integer> rangeMap = new HashMap<>();
 
-        int chunk = calculateChunk(min, max);
         int ind = min;
 
+        if (min != max) {
+            int chunk = calculateChunk(min, max);
 
-        if (max >= Integer.MIN_VALUE + chunk) {
+            if (max >= Integer.MIN_VALUE + chunk) {
 
-            for(ind = min; ind <= max - chunk;) {
-                rangeMap.put(ind, ind + chunk - 1);
-                ind += chunk;
+                for (ind = min; ind <= max - chunk; ) {
+                    rangeMap.put(ind, ind + chunk - 1);
+                    ind += chunk;
+                }
             }
         }
 
@@ -38,16 +40,17 @@ public class Scatter {
     }
 
     private static int calculateChunk(final int min, final int max) {
-        int chunk = (max / DIVIDED_BY) - (min / DIVIDED_BY);
+        int maxPart = (max / DIVIDED_BY) == 0 ? (int)Math.signum(max) : (max / DIVIDED_BY);
+        int minPart = (min / DIVIDED_BY) == 0 ? (int)Math.signum(min) : (min / DIVIDED_BY);
+        int chunk = maxPart - minPart;
 
         if (chunk == 0) {
             if (max != min) {
                 chunk = (max / 2) - (min / 2);
             }
-
-            chunk = (chunk > 1) ? chunk : 2;
-
         }
+
+        chunk = (chunk > 1) ? chunk : 2;
 
         if (chunk <= 1) {
             throw new IllegalArgumentException(String.format("chunk = %d", chunk));

@@ -40,7 +40,7 @@ public class ProcessorTest {
         log.debug("------------     test_fast_processor_100MB_file");
         log.debug("");
         String testFile = "test100MB.txt";
-        FileSystem.writeTestData(testFile,1024 * 1024);
+        FileSystem.writeTestData(testFile,10 * 1024 * 1024);
 
         long start = System.currentTimeMillis();
 
@@ -79,6 +79,23 @@ public class ProcessorTest {
         soutTime("fast processor", start);
     }
 
+    @Test
+    public void test_one_value_data() throws IOException {
+        log.debug("------------     test_one_value_data");
+        log.debug("");
+        String test1Gb = "one_value.txt";
+        FileSystem.writeOneValueTestData("one_value.txt",600_000_000, 0);
+
+        long start = System.currentTimeMillis();
+
+        File sourceFile = new File(test1Gb);
+        FastProcessor processor = new FastProcessor();
+        processor.sort(sourceFile);
+
+        log.debug("");
+        soutTime("fast processor", start);
+    }
+
     // tests that values range from min to max is scattered properly
     @Test
     public void test_all_scatters() {
@@ -88,6 +105,24 @@ public class ProcessorTest {
         int min;
         int max;
         boolean passed;
+
+        min = 0; max = 0;
+        rangeMap = Scatter.of(min, max);
+        log.debug(String.format("checked scatters = %d min = %d max = %d", rangeMap.size(), min, max));
+        Assert.assertTrue(rangeMap.size() == 1);
+        Assert.assertTrue(max == rangeMap.get(min));
+
+        min = 0; max = 3;
+        rangeMap = Scatter.of(min, max);
+        log.debug(String.format("checked scatters = %d min = %d max = %d", rangeMap.size(), min, max));
+        passed = test_ranges(rangeMap, min, max);
+        Assert.assertTrue(passed);
+
+        min = -8; max = 32;
+        rangeMap = Scatter.of(min, max);
+        log.debug(String.format("checked scatters = %d min = %d max = %d", rangeMap.size(), min, max));
+        passed = test_ranges(rangeMap, min, max);
+        Assert.assertTrue(passed);
 
         min = Integer.MIN_VALUE; max = Integer.MAX_VALUE;
         rangeMap = Scatter.of(min, max);

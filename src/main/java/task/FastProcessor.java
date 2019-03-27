@@ -65,7 +65,7 @@ public class FastProcessor{
                 }
 
             } else {
-                soutText(String.format("sort file length = %dMB", partFile.length() / (1024 * 1024)));
+                soutText(String.format("sort file %s length = %dMB", partFile.getName(), partFile.length() / (1024 * 1024)));
                 sortInMemory(dir, partFile);
             }
 

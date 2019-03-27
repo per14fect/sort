@@ -178,4 +178,18 @@ public class FileSystem {
         }
     }
 
+    public static void writeOneValueTestData(String file, int numRecords, int value) throws IOException {
+        try (Writer writer = new FileWriter(file); BufferedWriter buf = new BufferedWriter(writer, Config.num(BUFFER_READ_SIZE))) {
+            long start = System.currentTimeMillis();
+
+            for (int i = 1; i <= numRecords; i++) {
+                buf.write(String.valueOf(value));
+                buf.newLine();
+            }
+
+            buf.flush();
+            soutText(String.format("write file %s with %d records -> %f seconds", file, numRecords, (System.currentTimeMillis() - start) / 1000.0));
+        }
+    }
+
 }
